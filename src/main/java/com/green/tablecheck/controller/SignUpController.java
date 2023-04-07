@@ -1,6 +1,6 @@
 package com.green.tablecheck.controller;
 
-import com.green.tablecheck.domain.SignUpForm;
+import com.green.tablecheck.domain.form.SignUpForm;
 import com.green.tablecheck.service.customer.SignUpCustomerService;
 import com.green.tablecheck.service.manager.SignUpManagerService;
 import javax.validation.Valid;
@@ -21,7 +21,7 @@ public class SignUpController {
 
     // 매니저 회원가입
     @PostMapping("/manager")
-    public ResponseEntity<String> signUpManger(@RequestBody @Valid SignUpForm form) {
+    public ResponseEntity<String> signUpManger(@RequestBody SignUpForm form) {  // TODO: @Valid 처리
         return ResponseEntity.ok(signUpManagerService.signUp(form));
     }
 
