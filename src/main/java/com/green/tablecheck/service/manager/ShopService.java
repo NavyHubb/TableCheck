@@ -7,7 +7,10 @@ import com.green.tablecheck.exception.CustomException;
 import com.green.tablecheck.exception.ErrorCode;
 import com.green.tablecheck.repository.ManagerRepository;
 import com.green.tablecheck.repository.ShopRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.Trie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ShopService {
 
+    private final Trie trie;
+
     private final ShopRepository shopRepository;
     private final ManagerRepository managerRepository;
 
+    // 상점 등록
     public Shop addShop(Long managerId, AddShopForm form) {
         Manager manager = managerRepository.findById(managerId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MANAGER));
@@ -39,7 +45,20 @@ public class ShopService {
 
         shopRepository.save(shop);
 
+        addAutocompleteKeyword(shop.getName());
+
         return shop;
+    }
+
+    // keyword를 prefix로 갖는 상점명들의 목록을 반환
+    public List<String> searchShop(String keyword) {
+        return (List<String>) this.trie.prefixMap(keyword).keySet()
+            .stream().collect(Collectors.toList());
+    }
+
+    // Trie에 상점명 등록
+    public void addAutocompleteKeyword(String keyword) {
+        this.trie.put(keyword, null);
     }
 
 }
