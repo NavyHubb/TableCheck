@@ -31,4 +31,9 @@ public class ShopController {
         return ResponseEntity.ok(shopService.searchShop(shopName));
     }
 
+    @GetMapping("/detail")
+    public ResponseEntity<ShopDto> getShop(@RequestParam String shopName) {
+        return ResponseEntity.ok(ShopDto.from(shopService.getShop(shopName)));
+    }
+
 }
