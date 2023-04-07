@@ -1,6 +1,6 @@
 package com.green.tablecheck.service.manager;
 
-import com.green.tablecheck.domain.SignUpForm;
+import com.green.tablecheck.domain.form.SignUpForm;
 import com.green.tablecheck.domain.model.Manager;
 import com.green.tablecheck.exception.CustomException;
 import com.green.tablecheck.exception.ErrorCode;

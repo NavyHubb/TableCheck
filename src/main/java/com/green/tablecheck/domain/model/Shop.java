@@ -2,7 +2,6 @@ package com.green.tablecheck.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,9 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,8 +28,9 @@ public class Shop extends BaseEntity {
     private String name;
     private String description;
     private String address;
+    private int tableCount;
 
-    @OneToOne(mappedBy = "shop", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "shop")
     private Manager manager;
 
 }

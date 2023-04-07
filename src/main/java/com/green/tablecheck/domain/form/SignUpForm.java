@@ -1,4 +1,4 @@
-package com.green.tablecheck.domain;
+package com.green.tablecheck.domain.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

@@ -1,10 +1,8 @@
 package com.green.tablecheck.domain.model;
 
-import com.green.tablecheck.domain.SignUpForm;
-import javax.persistence.CascadeType;
+import com.green.tablecheck.domain.form.SignUpForm;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Getter
@@ -32,7 +31,7 @@ public class Manager extends BaseEntity {
     private String password;
     private String phone;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
@@ -43,6 +42,11 @@ public class Manager extends BaseEntity {
             .password(form.getPassword())
             .phone(form.getPhone())
             .build();
+    }
+
+    @Transactional
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 
 }
