@@ -61,4 +61,10 @@ public class ShopService {
         this.trie.put(keyword, null);
     }
 
+    public Shop getShop(String shopName) {
+        Shop shop = shopRepository.findByName(shopName)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_SHOP));
+
+        return shop;
+    }
 }
