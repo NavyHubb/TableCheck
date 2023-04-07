@@ -1,6 +1,6 @@
 package com.green.tablecheck.domain.model;
 
-import com.green.tablecheck.domain.SignUpForm;
+import com.green.tablecheck.domain.form.SignUpForm;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
