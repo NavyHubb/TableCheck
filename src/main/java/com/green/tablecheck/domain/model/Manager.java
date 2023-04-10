@@ -1,6 +1,7 @@
 package com.green.tablecheck.domain.model;
 
 import com.green.tablecheck.domain.form.SignUpForm;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,9 @@ public class Manager extends BaseEntity {
     private String password;
     private String phone;
 
-    @OneToOne
+    // cascade 속성을 통해 ShopRepository에 따로 shop객체를 save하지 않아도
+    // manager 객체를 영속화할 때 이에 연관되어 있는 shop 객체까지 같이 영속화시킴
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shop_id")
     private Shop shop;
 

@@ -1,10 +1,14 @@
 package com.green.tablecheck.domain.model;
 
+import com.green.tablecheck.domain.type.StatusType;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,8 +33,12 @@ public class Shop extends BaseEntity {
     private String description;
     private String address;
     private int tableCount;
+    private StatusType statusType;
 
     @OneToOne(mappedBy = "shop")
     private Manager manager;
+
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private List<Reservation> reservation;
 
 }
