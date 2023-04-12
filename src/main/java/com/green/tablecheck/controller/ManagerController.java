@@ -4,10 +4,11 @@ import com.green.tablecheck.config.JwtAuthenticationProvider;
 import com.green.tablecheck.domain.dto.ShopDto;
 import com.green.tablecheck.domain.dto.UserVo;
 import com.green.tablecheck.domain.form.AddShopForm;
-import com.green.tablecheck.service.manager.ManagerService;
+import com.green.tablecheck.service.ManagerService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,6 +30,12 @@ public class ManagerController {
         @RequestBody @Valid AddShopForm form) {
         UserVo vo = provider.getUserVo(token);  // manager
         return ResponseEntity.ok(ShopDto.from(managerService.addShop(vo.getId(), form)));
+    }
+
+    @PatchMapping
+    public ResponseEntity<String> changeStatus(@RequestHeader(name = TOKEN_NAME) String token) {
+        UserVo vo = provider.getUserVo(token);  // manager
+        return ResponseEntity.ok(managerService.changeStatus(vo.getId()));
     }
 
 }

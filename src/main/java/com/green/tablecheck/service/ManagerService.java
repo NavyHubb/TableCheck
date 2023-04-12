@@ -1,4 +1,4 @@
-package com.green.tablecheck.service.manager;
+package com.green.tablecheck.service;
 
 import com.green.tablecheck.domain.form.AddShopForm;
 import com.green.tablecheck.domain.model.Manager;
@@ -57,4 +57,24 @@ public class ManagerService {
         this.trie.put(keyword, null);
     }
 
+
+    public String changeStatus(Long managerId) {
+        Manager manager = managerRepository.findById(managerId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MANAGER));
+
+        Shop shop = manager.getShop();
+        if (shop == null) {
+            throw new CustomException(ErrorCode.UNREGISTERED_SHOP);
+        }
+
+        if (shop.getStatusType().equals(StatusType.CLOSED)) {
+            shop.setStatusType(StatusType.OPEN);
+
+            return "영업을 시작합니다.";
+        } else {
+            shop.setStatusType(StatusType.CLOSED);
+
+            return "영업을 마칩니다.";
+        }
+    }
 }

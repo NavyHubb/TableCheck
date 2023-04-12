@@ -1,7 +1,7 @@
 package com.green.tablecheck.controller;
 
 import com.green.tablecheck.domain.dto.ShopDto;
-import com.green.tablecheck.service.manager.ShopService;
+import com.green.tablecheck.service.ShopService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
