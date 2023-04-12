@@ -25,14 +25,14 @@ public class ManagerController {
 
     private final String TOKEN_NAME = "X-AUTH-TOKEN";
 
-    @PostMapping
+    @PostMapping("/shop")
     public ResponseEntity<ShopDto> addShop(@RequestHeader(name = TOKEN_NAME) String token,
         @RequestBody @Valid AddShopForm form) {
         UserVo vo = provider.getUserVo(token);  // manager
         return ResponseEntity.ok(ShopDto.from(managerService.addShop(vo.getId(), form)));
     }
 
-    @PatchMapping
+    @PatchMapping("/shop/status")
     public ResponseEntity<String> changeStatus(@RequestHeader(name = TOKEN_NAME) String token) {
         UserVo vo = provider.getUserVo(token);  // manager
         return ResponseEntity.ok(managerService.changeStatus(vo.getId()));
