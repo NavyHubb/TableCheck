@@ -6,6 +6,7 @@ import com.green.tablecheck.domain.form.ReservationForm;
 import com.green.tablecheck.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -23,13 +24,20 @@ public class CustomerController {
 
     private final String TOKEN_NAME = "X-AUTH-TOKEN";
 
-    @PostMapping("/reserve")
+    @PostMapping("/reservation")
     public ResponseEntity<String> reserveShop(
         @RequestHeader(name = TOKEN_NAME) String token,
         @RequestParam Long shopId,
         @RequestBody ReservationForm form) {
-        UserVo vo = provider.getUserVo(token);  // customer
+        UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(customerService.reserveShop(shopId, vo.getId(), form));
+    }
+
+    @GetMapping("/reservation/code")
+    public ResponseEntity<String> getCode(
+        @RequestHeader(name = TOKEN_NAME) String token, @RequestParam Long shopId) {
+        UserVo vo = provider.getUserVo(token);
+        return ResponseEntity.ok(customerService.getCode(shopId, vo.getId()));
     }
 
 }
