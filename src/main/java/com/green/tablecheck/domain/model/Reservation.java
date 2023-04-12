@@ -1,5 +1,6 @@
 package com.green.tablecheck.domain.model;
 
+import com.green.tablecheck.domain.type.ApprovalType;
 import com.green.tablecheck.domain.type.AttendType;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -44,6 +45,9 @@ public class Reservation extends BaseEntity {
     private String code;
 
     @Enumerated(EnumType.STRING)
-    private AttendType attendType = AttendType.NOSHOW;
+    private AttendType attendType;
+
+    @Enumerated(EnumType.STRING)
+    private ApprovalType approvalType;
 
 }

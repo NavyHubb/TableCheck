@@ -1,6 +1,7 @@
 package com.green.tablecheck.service;
 
 import com.green.tablecheck.domain.model.Reservation;
+import com.green.tablecheck.domain.type.ApprovalType;
 import com.green.tablecheck.domain.type.AttendType;
 import com.green.tablecheck.exception.CustomException;
 import com.green.tablecheck.exception.ErrorCode;
@@ -17,18 +18,24 @@ public class KioskService {
 
     private final ReservationRepository reservationRepository;
 
-    @Transactional(readOnly = true)
     public String attend(Long shopId, String phone) {
         Reservation reservation = reservationRepository.findByShopId(shopId).stream()
                                             .filter(r -> r.getCustomer().getPhone().equals(phone))
                                             .findFirst()
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
 
+        if (!reservation.getApprovalType().equals(ApprovalType.APPROVED)) {
+            throw new CustomException(ErrorCode.NOT_APPORVED);
+        }
+
         if (reservation.getDeadline().isBefore(LocalDateTime.now())) {
             throw new CustomException(ErrorCode.RESERVATION_CLOSED);
         }
 
-        return reservation.getCode();
+        reservation.setAttendType(AttendType.CHECKING);
+        reservationRepository.save(reservation);
+
+        return "코드를 확인해주세요.";
     }
 
     public String checkCode(Long shopId, String phone, String code) {
