@@ -2,11 +2,14 @@ package com.green.tablecheck.service;
 
 import com.green.tablecheck.domain.form.AddShopForm;
 import com.green.tablecheck.domain.model.Manager;
+import com.green.tablecheck.domain.model.Reservation;
 import com.green.tablecheck.domain.model.Shop;
+import com.green.tablecheck.domain.type.ApprovalType;
 import com.green.tablecheck.domain.type.StatusType;
 import com.green.tablecheck.exception.CustomException;
 import com.green.tablecheck.exception.ErrorCode;
 import com.green.tablecheck.repository.ManagerRepository;
+import com.green.tablecheck.repository.ReservationRepository;
 import com.green.tablecheck.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.Trie;
@@ -22,6 +25,7 @@ public class ManagerService {
 
     private final ShopRepository shopRepository;
     private final ManagerRepository managerRepository;
+    private final ReservationRepository reservationRepository;
 
     // 상점 등록
     public String addShop(Long managerId, AddShopForm form) {
@@ -77,4 +81,27 @@ public class ManagerService {
             return "영업을 마칩니다.";
         }
     }
+
+    public String approveReservation(Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+
+        reservation.setApprovalType(ApprovalType.APPROVED);
+
+        reservationRepository.save(reservation);
+
+        return "예약을 승인 처리하였습니다.";
+    }
+
+    public String refuseReservation(Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+
+        reservation.setApprovalType(ApprovalType.REFUSED);
+
+        reservationRepository.save(reservation);
+
+        return "예약을 거절 처리하였습니다.";
+    }
+
 }
