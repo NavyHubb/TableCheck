@@ -24,10 +24,9 @@ public class SignUpController {
 
     // 매니저 회원가입
     @PostMapping("/manager")
-    public ResponseEntity<Object> signUpManger(@RequestBody @Valid SignUpForm form
-    , Errors errors) {
+    public ResponseEntity<Object> signUpManger(@RequestBody @Valid SignUpForm form, Errors errors) {
 
-        // 에러 메세지 모음
+        // 유효성 검사에서 발생한 에러 메세지 모음
         if (errors.hasErrors()) {
             List<ErrorResponse> errorResponses = new ArrayList<>();
 
