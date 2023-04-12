@@ -23,7 +23,7 @@ public class ReservationDto {
         return ReservationDto.builder()
             .shopName(reservation.getShop().getName())
             .customerName(reservation.getCustomer().getName())
-            .dateTime(reservation.getDateTime())
+            .dateTime(reservation.getDeadline())
             .build();
     }
 
