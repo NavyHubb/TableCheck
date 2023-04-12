@@ -1,7 +1,6 @@
 package com.green.tablecheck.controller;
 
 import com.green.tablecheck.config.JwtAuthenticationProvider;
-import com.green.tablecheck.domain.dto.ShopDto;
 import com.green.tablecheck.domain.dto.UserVo;
 import com.green.tablecheck.domain.form.AddShopForm;
 import com.green.tablecheck.service.ManagerService;
@@ -26,10 +25,10 @@ public class ManagerController {
     private final String TOKEN_NAME = "X-AUTH-TOKEN";
 
     @PostMapping("/shop")
-    public ResponseEntity<ShopDto> addShop(@RequestHeader(name = TOKEN_NAME) String token,
+    public ResponseEntity<String> addShop(@RequestHeader(name = TOKEN_NAME) String token,
         @RequestBody @Valid AddShopForm form) {
         UserVo vo = provider.getUserVo(token);  // manager
-        return ResponseEntity.ok(ShopDto.from(managerService.addShop(vo.getId(), form)));
+        return ResponseEntity.ok(managerService.addShop(vo.getId(), form));
     }
 
     @PatchMapping("/shop/status")
