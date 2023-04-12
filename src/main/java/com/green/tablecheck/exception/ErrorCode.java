@@ -17,6 +17,7 @@ public enum ErrorCode {
     SHOP_CLOSED(HttpStatus.BAD_REQUEST, "현재 영업 중이 아닙니다."),
 
     ALREADY_SHOP_EXIST(HttpStatus.BAD_REQUEST, "이미 매장을 가지고 있는 매니저입니다."),
+    UNREGISTERED_SHOP(HttpStatus.BAD_REQUEST, "매장을 먼저 등록해주세요."),
 
     ;
 
