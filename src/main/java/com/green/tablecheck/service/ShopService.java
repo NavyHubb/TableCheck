@@ -1,4 +1,4 @@
-package com.green.tablecheck.service.manager;
+package com.green.tablecheck.service;
 
 import com.green.tablecheck.domain.model.Shop;
 import com.green.tablecheck.exception.CustomException;
