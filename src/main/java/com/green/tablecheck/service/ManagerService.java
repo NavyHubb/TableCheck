@@ -24,7 +24,7 @@ public class ManagerService {
     private final ManagerRepository managerRepository;
 
     // 상점 등록
-    public Shop addShop(Long managerId, AddShopForm form) {
+    public String addShop(Long managerId, AddShopForm form) {
         Manager manager = managerRepository.findById(managerId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MANAGER));
 
@@ -49,7 +49,7 @@ public class ManagerService {
 
         addAutocompleteKeyword(shop.getName());
 
-        return shop;
+        return "매장 등록이 완료되었습니다.";
     }
 
     // Trie에 상점명 등록

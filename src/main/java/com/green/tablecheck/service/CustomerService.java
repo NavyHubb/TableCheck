@@ -36,14 +36,23 @@ public class CustomerService {
         Reservation reservation = Reservation.builder()
             .shop(shop)
             .customer(customer)
-            .dateTime(form.getDateTime())
+            .deadline(form.getDateTime().minusMinutes(10))  // 예약 시간의 10분 전을 마감시각으로 설정
             .peopleCount(form.getPeopleCount())
+            .code(generateCode())
             .build();
 
         shop.getReservation().add(reservation);
         shopRepository.save(shop);
 
         return "예약이 완료되었습니다.";
+    }
+
+    private String generateCode() {
+        double min = 1000;
+        double max = 10000;
+        int code = (int) ((Math.random() * (max - min)) + min);
+
+        return Integer.toString(code);
     }
 
 }
