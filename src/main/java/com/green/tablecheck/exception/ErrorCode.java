@@ -21,6 +21,7 @@ public enum ErrorCode {
     ALREADY_SHOP_EXIST(HttpStatus.BAD_REQUEST, "이미 매장을 가지고 있는 매니저입니다."),
     ALREADY_RESERVATION_EXIST(HttpStatus.BAD_REQUEST, "이미 같은 날짜에 예약내역이 존재합니다."),
     ALREADY_REVIEW_EXIST(HttpStatus.BAD_REQUEST, "이미 리뷰를 작성하셨습니다."),
+    ALREADY_CHECKED_RESERVATION(HttpStatus.BAD_REQUEST, "이미 확인 처리된 예약입니다."),
     UNREGISTERED_SHOP(HttpStatus.BAD_REQUEST, "매장을 먼저 등록해주세요."),
 
     NOT_APPORVED(HttpStatus.BAD_REQUEST, "승인되지 않은 예약입니다."),

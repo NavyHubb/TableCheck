@@ -82,10 +82,13 @@ public class ManagerService {
         }
     }
 
-    // TODO : 이미 승인되거나 거절된 내역 있는지 먼저 확인
     public String approveReservation(Long reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+
+        if (reservation.getApprovalType() != ApprovalType.WAITING) {
+            throw new CustomException(ErrorCode.ALREADY_CHECKED_RESERVATION);
+        }
 
         reservation.setApprovalType(ApprovalType.APPROVED);
 
@@ -97,6 +100,10 @@ public class ManagerService {
     public String refuseReservation(Long reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+
+        if (reservation.getApprovalType() != ApprovalType.WAITING) {
+            throw new CustomException(ErrorCode.ALREADY_CHECKED_RESERVATION);
+        }
 
         reservation.setApprovalType(ApprovalType.REFUSED);
 
