@@ -1,8 +1,10 @@
 package com.green.tablecheck.service;
 
 import com.green.tablecheck.domain.form.ReservationForm;
+import com.green.tablecheck.domain.form.ReviewForm;
 import com.green.tablecheck.domain.model.Customer;
 import com.green.tablecheck.domain.model.Reservation;
+import com.green.tablecheck.domain.model.Review;
 import com.green.tablecheck.domain.model.Shop;
 import com.green.tablecheck.domain.type.ApprovalType;
 import com.green.tablecheck.domain.type.AttendType;
@@ -12,7 +14,6 @@ import com.green.tablecheck.exception.ErrorCode;
 import com.green.tablecheck.repository.CustomerRepository;
 import com.green.tablecheck.repository.ReservationRepository;
 import com.green.tablecheck.repository.ShopRepository;
-import java.time.LocalDate;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,30 @@ public class CustomerService {
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
 
         return reservation.getCode();
+    }
+
+    public String review(Long reservationId, ReviewForm form) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+            .filter(r -> r.getAttendType().equals(AttendType.ATTEND))
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+
+        try {
+            if (reservation.getReview() != null) {
+                throw new CustomException(ErrorCode.ALREADY_REVIEW_EXIST);
+            }
+        } catch (NullPointerException e) {
+
+        }
+
+        Review review = Review.builder()
+            .star(form.getStar())
+            .message(form.getMessage())
+            .build();
+
+        reservation.setReview(review);
+        reservationRepository.save(reservation);
+
+        return "리뷰가 등록되었습니다.";
     }
 
 }

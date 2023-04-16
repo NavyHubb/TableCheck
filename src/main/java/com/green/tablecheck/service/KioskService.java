@@ -6,6 +6,7 @@ import com.green.tablecheck.domain.type.AttendType;
 import com.green.tablecheck.exception.CustomException;
 import com.green.tablecheck.exception.ErrorCode;
 import com.green.tablecheck.repository.ReservationRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,10 @@ public class KioskService {
     private final ReservationRepository reservationRepository;
 
     public String attend(Long shopId, String phone) {
+        // 오늘 날짜에 해당하는 예약 조회
         Reservation reservation = reservationRepository.findByShopId(shopId).stream()
-                                            .filter(r -> r.getCustomer().getPhone().equals(phone))
+                                            .filter(r -> r.getCustomer().getPhone().equals(phone)
+                                                && r.getDeadline().toLocalDate().isEqual(LocalDate.now()))
                                             .findFirst()
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
 

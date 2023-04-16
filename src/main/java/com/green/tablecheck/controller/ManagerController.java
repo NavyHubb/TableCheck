@@ -31,7 +31,7 @@ public class ManagerController {
         return ResponseEntity.ok(managerService.addShop(vo.getId(), form));
     }
 
-    @PatchMapping("/shop/status")
+    @PatchMapping("/shop/status")  // TODO: 엔드포인트에 id 값 pathVariable로 포함
     public ResponseEntity<String> changeStatus(@RequestHeader(name = TOKEN_NAME) String token) {
         UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(managerService.changeStatus(vo.getId()));
