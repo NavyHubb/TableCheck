@@ -3,6 +3,9 @@ package com.green.tablecheck.domain.model;
 import com.green.tablecheck.domain.type.ApprovalType;
 import com.green.tablecheck.domain.type.AttendType;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +45,11 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    private LocalDateTime deadline;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "review_id")
+    private Review review;
+
+    private LocalDateTime deadline;  // TODO : 미래 날짜만 허용하도록 @Future 유효성 검사 등록
     private int peopleCount;
     private String code;
 
