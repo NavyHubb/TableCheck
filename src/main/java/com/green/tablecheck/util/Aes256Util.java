@@ -5,8 +5,10 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import lombok.experimental.UtilityClass;
 import org.apache.tomcat.util.codec.binary.Base64;
 
+@UtilityClass
 public class Aes256Util {
     public static String alg = "AES/CBC/PKCS5Padding";
     private static final String KEY = "ZEROBASEKEYISZEROBASEKEY";  // 언더바(_) 포함 미허용

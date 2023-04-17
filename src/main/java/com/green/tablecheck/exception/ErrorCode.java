@@ -21,6 +21,7 @@ public enum ErrorCode {
     NOT_IN_CHECKING(HttpStatus.BAD_REQUEST, "현재 코드 확인 상태가 아닙니다."),
     NOT_APPORVED(HttpStatus.BAD_REQUEST, "승인되지 않은 예약입니다."),
     WRONG_CODE(HttpStatus.BAD_REQUEST, "올바른 코드를 입력해주세요."),
+    WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "올바른 비밀번호를 입력해주세요."),
 
     ALREADY_SHOP_EXIST(HttpStatus.BAD_REQUEST, "이미 매장을 가지고 있는 매니저입니다."),
     ALREADY_RESERVATION_EXIST(HttpStatus.BAD_REQUEST, "이미 같은 날짜에 예약내역이 존재합니다."),

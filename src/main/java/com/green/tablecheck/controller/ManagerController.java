@@ -26,30 +26,36 @@ public class ManagerController {
     private final String TOKEN_NAME = "X-AUTH-TOKEN";
 
     @PostMapping("/shop")
-    public ResponseEntity<String> addShop(@RequestHeader(name = TOKEN_NAME) String token,
+    public ResponseEntity<String> addShop(
+        @RequestHeader(name = TOKEN_NAME) String token,
         @RequestBody @Valid AddShopForm form) {
+
         UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(managerService.addShop(vo.getId(), form));
     }
 
-    @PatchMapping("/shop/{shopId}/status")
+    @PatchMapping("/shop/status")
     public ResponseEntity<String> changeStatus(
-        @RequestHeader(name = TOKEN_NAME) String token,
-        @PathVariable Long shopId) {
+        @RequestHeader(name = TOKEN_NAME) String token) {
+
         UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(managerService.changeStatus(vo.getId()));
     }
 
     @PatchMapping("/reservation/{reservationId}/approval")
-    public ResponseEntity<String> approveReservation(@RequestHeader(name = TOKEN_NAME) String token
-    ,@PathVariable Long reservationId) {
+    public ResponseEntity<String> approveReservation(
+        @RequestHeader(name = TOKEN_NAME) String token
+        ,@PathVariable Long reservationId) {
+
         UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(managerService.approveReservation(reservationId));
     }
 
     @PatchMapping("/reservation/{reservationId}/refusal")
-    public ResponseEntity<String> declineReservation(@RequestHeader(name = TOKEN_NAME) String token
+    public ResponseEntity<String> declineReservation(
+        @RequestHeader(name = TOKEN_NAME) String token
         ,@PathVariable Long reservationId) {
+
         UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(managerService.refuseReservation(reservationId));
     }
