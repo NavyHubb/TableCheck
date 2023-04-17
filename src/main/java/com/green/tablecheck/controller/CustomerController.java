@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,23 +25,23 @@ public class CustomerController {
 
     private final String TOKEN_NAME = "X-AUTH-TOKEN";
 
-    @PostMapping("/reservation")
+    @PostMapping("/reservation/shop/{shopId}")
     public ResponseEntity<String> reserveShop(
         @RequestHeader(name = TOKEN_NAME) String token,
-        @RequestParam Long shopId,
+        @PathVariable Long shopId,
         @RequestBody ReservationForm form) {
         UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(customerService.reserveShop(shopId, vo.getId(), form));
     }
 
-    @GetMapping("/reservation/code")
+    @GetMapping("/reservation/{reservationId}/code")
     public ResponseEntity<String> getCode(
-        @RequestHeader(name = TOKEN_NAME) String token, @RequestParam Long shopId) {
+        @RequestHeader(name = TOKEN_NAME) String token, @PathVariable Long reservationId) {
         UserVo vo = provider.getUserVo(token);
-        return ResponseEntity.ok(customerService.getCode(shopId, vo.getId()));
+        return ResponseEntity.ok(customerService.getCode(reservationId, vo.getId()));
     }
 
-    @PostMapping("/reservation/review/{reservationId}")
+    @PostMapping("/reservation//{reservationId}/review")
     public ResponseEntity<String> review(
         @RequestHeader(name = TOKEN_NAME) String token,
         @PathVariable Long reservationId,
