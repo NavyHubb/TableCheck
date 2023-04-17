@@ -52,4 +52,12 @@ public class Manager extends BaseEntity {
         this.shop = shop;
     }
 
+    public boolean hasShop() {
+        if (this.shop == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

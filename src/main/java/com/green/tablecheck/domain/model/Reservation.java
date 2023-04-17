@@ -3,8 +3,6 @@ package com.green.tablecheck.domain.model;
 import com.green.tablecheck.domain.type.ApprovalType;
 import com.green.tablecheck.domain.type.AttendType;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,5 +55,13 @@ public class Reservation extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ApprovalType approvalType;
+
+    public boolean hasReview() {
+        if (this.review == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 }

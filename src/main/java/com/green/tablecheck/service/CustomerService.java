@@ -14,6 +14,7 @@ import com.green.tablecheck.exception.ErrorCode;
 import com.green.tablecheck.repository.CustomerRepository;
 import com.green.tablecheck.repository.ReservationRepository;
 import com.green.tablecheck.repository.ShopRepository;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,11 +30,9 @@ public class CustomerService {
     private final ReservationRepository reservationRepository;
 
     public String reserveShop(Long shopId, Long customerId, ReservationForm form) {
-        Customer customer = customerRepository.findById(customerId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CUSTOMER));
-
-        Shop shop = shopRepository.findById(shopId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_SHOP));
+        // 객체 조회
+        Customer customer = getCustomerOrElseThrow(customerId);
+        Shop shop = getShopOrElseThrow(shopId);
 
         // 현재 영업 중이 아닌 경우
         if (shop.getStatusType().equals(StatusType.CLOSED)) {
@@ -64,6 +63,16 @@ public class CustomerService {
         return "예약 신청이 완료되었습니다.";
     }
 
+    private Shop getShopOrElseThrow(Long shopId) {
+        return shopRepository.findById(shopId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_SHOP));
+    }
+
+    private Customer getCustomerOrElseThrow(Long customerId) {
+        return customerRepository.findById(customerId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CUSTOMER));
+    }
+
     private String generateCode() {
         double min = 1000;
         double max = 10000;
@@ -72,27 +81,35 @@ public class CustomerService {
         return Integer.toString(code);
     }
 
-    public String getCode(Long shopId, Long customerId) {
-        Reservation reservation = reservationRepository.findByShopId(shopId).stream()
-            .filter(r -> r.getCustomer().getId().equals(customerId)
-                && r.getAttendType().equals(AttendType.CHECKING))
-            .findFirst()
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+    public String getCode(Long reservationId, Long customerId) {
+        Reservation reservation = getReservationOrElseThrow(reservationId);
+        Customer customer = getCustomerOrElseThrow(customerId);
+
+        if (!Objects.equals(customerId, reservation.getCustomer().getId())) {
+            throw new CustomException(ErrorCode.NO_AUTHORIZATION);
+        }
+
+        if (reservation.getAttendType() != AttendType.CHECKING) {
+            throw new CustomException(ErrorCode.NOT_IN_CHECKING);
+        }
 
         return reservation.getCode();
     }
 
-    public String review(Long reservationId, ReviewForm form) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-            .filter(r -> r.getAttendType().equals(AttendType.ATTEND))
+    private Reservation getReservationOrElseThrow(Long reservationId) {
+        return reservationRepository.findById(reservationId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+    }
 
-        try {
-            if (reservation.getReview() != null) {
-                throw new CustomException(ErrorCode.ALREADY_REVIEW_EXIST);
-            }
-        } catch (NullPointerException e) {
+    public String review(Long reservationId, ReviewForm form) {
+        Reservation reservation = getReservationOrElseThrow(reservationId);
 
+        if (reservation.getAttendType() != AttendType.ATTEND) {
+            throw new CustomException(ErrorCode.NOT_ATTEND);
+        }
+
+        if (reservation.hasReview()) {
+            throw new CustomException(ErrorCode.ALREADY_REVIEW_EXIST);
         }
 
         Review review = Review.builder()
@@ -104,6 +121,17 @@ public class CustomerService {
         reservationRepository.save(reservation);
 
         return "리뷰가 등록되었습니다.";
+    }
+
+    private boolean isReviewed(Reservation reservation) {
+        try {
+            if (reservation.getReview() != null) {
+                throw new CustomException(ErrorCode.ALREADY_REVIEW_EXIST);
+            }
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
     }
 
 }
