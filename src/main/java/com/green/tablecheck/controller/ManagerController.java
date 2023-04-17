@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -31,22 +32,24 @@ public class ManagerController {
         return ResponseEntity.ok(managerService.addShop(vo.getId(), form));
     }
 
-    @PatchMapping("/shop/status")  // TODO: 엔드포인트에 id 값 pathVariable로 포함
-    public ResponseEntity<String> changeStatus(@RequestHeader(name = TOKEN_NAME) String token) {
+    @PatchMapping("/shop/{shopId}/status")
+    public ResponseEntity<String> changeStatus(
+        @RequestHeader(name = TOKEN_NAME) String token,
+        @PathVariable Long shopId) {
         UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(managerService.changeStatus(vo.getId()));
     }
 
-    @PatchMapping("/reservation/approval")
+    @PatchMapping("/reservation/{reservationId}/approval")
     public ResponseEntity<String> approveReservation(@RequestHeader(name = TOKEN_NAME) String token
-    ,Long reservationId) {
+    ,@PathVariable Long reservationId) {
         UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(managerService.approveReservation(reservationId));
     }
 
-    @PatchMapping("/reservation/refusal")
+    @PatchMapping("/reservation/{reservationId}/refusal")
     public ResponseEntity<String> declineReservation(@RequestHeader(name = TOKEN_NAME) String token
-        ,Long reservationId) {
+        ,@PathVariable Long reservationId) {
         UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(managerService.refuseReservation(reservationId));
     }

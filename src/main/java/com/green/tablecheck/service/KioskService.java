@@ -21,11 +21,7 @@ public class KioskService {
 
     public String attend(Long shopId, String phone) {
         // 오늘 날짜에 해당하는 예약 조회
-        Reservation reservation = reservationRepository.findByShopId(shopId).stream()
-                                            .filter(r -> r.getCustomer().getPhone().equals(phone)
-                                                && r.getDeadline().toLocalDate().isEqual(LocalDate.now()))
-                                            .findFirst()
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+        Reservation reservation = getReservationOrElseThrow(shopId, phone);
 
         if (!reservation.getApprovalType().equals(ApprovalType.APPROVED)) {
             throw new CustomException(ErrorCode.NOT_APPORVED);
@@ -41,11 +37,17 @@ public class KioskService {
         return "코드를 확인해주세요.";
     }
 
-    public String checkCode(Long shopId, String phone, String code) {
+    private Reservation getReservationOrElseThrow(Long shopId, String phone) {
         Reservation reservation = reservationRepository.findByShopId(shopId).stream()
-            .filter(r -> r.getCustomer().getPhone().equals(phone))
-            .findFirst()
+                                            .filter(r -> r.getCustomer().getPhone().equals(phone)
+                                                && r.getDeadline().toLocalDate().isEqual(LocalDate.now()))
+                                            .findFirst()
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+        return reservation;
+    }
+
+    public String checkCode(Long shopId, String phone, String code) {
+        Reservation reservation = getReservationOrElseThrow(shopId, phone);
 
         if (reservation.getCode().equals(code)) {
             reservation.setAttendType(AttendType.ATTEND);

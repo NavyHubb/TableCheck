@@ -17,7 +17,6 @@ public class ShopController {
 
     private final ShopService shopService;
 
-
     @GetMapping
     public ResponseEntity<List<String>> searchShop(@RequestParam String shopName) {
         return ResponseEntity.ok(shopService.searchShop(shopName));
@@ -27,7 +26,5 @@ public class ShopController {
     public ResponseEntity<ShopDto> getShop(@RequestParam String shopName) {
         return ResponseEntity.ok(ShopDto.from(shopService.getShop(shopName)));
     }
-
-
 
 }
