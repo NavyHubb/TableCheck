@@ -1,13 +1,16 @@
 package com.green.tablecheck.controller;
 
 import com.green.tablecheck.config.JwtAuthenticationProvider;
+import com.green.tablecheck.domain.dto.TokenDto;
 import com.green.tablecheck.domain.dto.UserVo;
 import com.green.tablecheck.domain.form.ReservationForm;
 import com.green.tablecheck.domain.form.ReviewForm;
 import com.green.tablecheck.service.CustomerService;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +50,11 @@ public class CustomerController {
         @PathVariable Long reservationId,
         @RequestBody ReviewForm reviewForm) {
         return ResponseEntity.ok(customerService.review(reservationId, reviewForm));
+    }
+
+    @PatchMapping("/token")
+    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+        return ResponseEntity.ok(TokenDto.from(provider.refreshToken(request)));
     }
 
 }

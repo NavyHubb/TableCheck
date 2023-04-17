@@ -7,18 +7,21 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.net.http.HttpRequest;
 import java.util.Date;
 import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
 
 public class JwtAuthenticationProvider {
     private final String secretKey = "secretKey";
+    private final String TOKEN_NAME = "X-AUTH-TOKEN";
     private final long TOKEN_VALID_TIME = 1000 * 60 *60 * 24;  // 하루
 
     // 토큰 생성
-    public String createToken(String userPk, Long id, UserType userType) {
+    public String createToken(String email, Long userId, UserType userType) {
         Claims claims = Jwts.claims()
-            .setSubject(Aes256Util.encrypt(userPk))
-            .setId(Aes256Util.encrypt(id.toString()));
+            .setSubject(Aes256Util.encrypt(email))
+            .setId(Aes256Util.encrypt(userId.toString()));
         claims.put("roles", userType);
         Date now = new Date();
 
@@ -41,6 +44,24 @@ public class JwtAuthenticationProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // 토큰 재발행
+    public String refreshToken(HttpServletRequest request) {
+        String token = request.getHeader(TOKEN_NAME);
+
+        Claims claims = Jwts.parser()
+            .setSigningKey(secretKey)
+            .parseClaimsJws(token)
+            .getBody();
+        Date now = new Date();
+
+        return Jwts.builder()
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .setExpiration(new Date(now.getTime() + TOKEN_VALID_TIME))
+            .signWith(SignatureAlgorithm.HS256, secretKey)
+            .compact();
     }
 
     // 토큰으로부터 사용자 정보 가져오기

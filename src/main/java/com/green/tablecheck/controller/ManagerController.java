@@ -1,9 +1,11 @@
 package com.green.tablecheck.controller;
 
 import com.green.tablecheck.config.JwtAuthenticationProvider;
+import com.green.tablecheck.domain.dto.TokenDto;
 import com.green.tablecheck.domain.dto.UserVo;
 import com.green.tablecheck.domain.form.AddShopForm;
 import com.green.tablecheck.service.ManagerService;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +60,11 @@ public class ManagerController {
 
         UserVo vo = provider.getUserVo(token);
         return ResponseEntity.ok(managerService.refuseReservation(reservationId));
+    }
+
+    @PatchMapping("/token")
+    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+        return ResponseEntity.ok(TokenDto.from(provider.refreshToken(request)));
     }
 
 }
