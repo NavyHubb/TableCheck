@@ -29,8 +29,7 @@ public class ManagerService {
 
     // 상점 등록
     public String addShop(Long managerId, AddShopForm form) {
-        Manager manager = managerRepository.findById(managerId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MANAGER));
+        Manager manager = getManagerOrElseThrow(managerId);
 
         // 이미 매장을 등록한 매니저인 경우
         if (shopRepository.findByManagerId(managerId).isPresent()) {
@@ -56,28 +55,30 @@ public class ManagerService {
         return "매장 등록이 완료되었습니다.";
     }
 
+    private Manager getManagerOrElseThrow(Long managerId) {
+        Manager manager = managerRepository.findById(managerId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MANAGER));
+        return manager;
+    }
+
     // Trie에 상점명 등록
     public void addAutocompleteKeyword(String keyword) {
         this.trie.put(keyword, null);
     }
 
-
     public String changeStatus(Long managerId) {
-        Manager manager = managerRepository.findById(managerId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MANAGER));
+        Manager manager = getManagerOrElseThrow(managerId);
 
-        Shop shop = manager.getShop();
-        if (shop == null) {
+        if (!manager.hasShop()) {
             throw new CustomException(ErrorCode.UNREGISTERED_SHOP);
         }
 
+        Shop shop = manager.getShop();
         if (shop.getStatusType().equals(StatusType.CLOSED)) {
             shop.setStatusType(StatusType.OPEN);
-
             return "영업을 시작합니다.";
         } else {
             shop.setStatusType(StatusType.CLOSED);
-
             return "영업을 마칩니다.";
         }
     }
