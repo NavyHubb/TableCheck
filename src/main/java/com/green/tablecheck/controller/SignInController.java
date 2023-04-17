@@ -1,5 +1,6 @@
 package com.green.tablecheck.controller;
 
+import com.green.tablecheck.domain.dto.TokenDto;
 import com.green.tablecheck.domain.form.SignInForm;
 import com.green.tablecheck.service.SignInService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,13 @@ public class SignInController {
     private final SignInService signInService;
 
     @PostMapping("/manager")
-    public ResponseEntity<String> mangerSignIn(@RequestBody SignInForm form) {
-        return ResponseEntity.ok(signInService.managerSignIn(form));
+    public ResponseEntity<TokenDto> mangerSignIn(@RequestBody SignInForm form) {
+        return ResponseEntity.ok(TokenDto.from(signInService.managerSignIn(form)));
     }
 
     @PostMapping("/customer")
-    public ResponseEntity<String> customerSignIn(@RequestBody SignInForm form) {
-        return ResponseEntity.ok(signInService.customerSignIn(form));
+    public ResponseEntity<TokenDto> customerSignIn(@RequestBody SignInForm form) {
+        return ResponseEntity.ok(TokenDto.from(signInService.customerSignIn(form)));
     }
 
 }
