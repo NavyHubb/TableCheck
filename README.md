@@ -18,3 +18,6 @@
 - [x] 매장 예약
 - [x] 방문 확인
 - [x] 리뷰 작성
+
+# 2. 클래스 다이어그램
+<img width="853" alt="Screenshot 2023-04-19 at 4 25 58 PM" src="https://user-images.githubusercontent.com/101810007/233000655-7dc661ed-93e1-49e1-a305-f6fc424830aa.png">
