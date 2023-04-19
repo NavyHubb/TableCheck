@@ -42,7 +42,7 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
 

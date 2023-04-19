@@ -43,6 +43,14 @@ public class Shop extends BaseEntity {
     private Manager manager;
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
-    private List<Reservation> reservation;
+    private List<Reservation> reservations;
+
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+
+        if (reservation.getShop() != this) {
+            reservation.setShop(this);
+        }
+    }
 
 }

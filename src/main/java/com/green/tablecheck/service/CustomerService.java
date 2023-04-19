@@ -57,7 +57,7 @@ public class CustomerService {
             .approvalType(ApprovalType.WAITING)
             .build();
 
-        shop.getReservation().add(reservation);
+        shop.addReservation(reservation);  // 연관관계 편의 메서드
         shopRepository.save(shop);
 
         return "예약 신청이 완료되었습니다.";
@@ -121,17 +121,6 @@ public class CustomerService {
         reservationRepository.save(reservation);
 
         return "리뷰가 등록되었습니다.";
-    }
-
-    private boolean isReviewed(Reservation reservation) {
-        try {
-            if (reservation.getReview() != null) {
-                throw new CustomException(ErrorCode.ALREADY_REVIEW_EXIST);
-            }
-        } catch (NullPointerException e) {
-            return false;
-        }
-        return true;
     }
 
 }

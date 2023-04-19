@@ -47,9 +47,12 @@ public class Manager extends BaseEntity {
             .build();
     }
 
-    @Transactional
     public void setShop(Shop shop) {
         this.shop = shop;
+
+        if (shop.getManager() != this) {
+            shop.setManager(this);
+        }
     }
 
     public boolean hasShop() {

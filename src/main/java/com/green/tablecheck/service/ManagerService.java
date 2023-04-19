@@ -44,7 +44,7 @@ public class ManagerService {
             .tableCount(form.getTableCount())
             .statusType(StatusType.CLOSED)
             .build();
-        manager.setShop(shop);
+        manager.setShop(shop);  // 연관관계 편의 메서드
 
         // Manager 엔티티가 Shop 엔티티에 영속성 전이 설정이 되어 있기 때문에
         // manager 객체에 shop 객체를 세팅한 뒤 manager를 영속화하면 여기에 연관되어 있는 shop까지 함께 영속화됨
@@ -84,33 +84,38 @@ public class ManagerService {
     }
 
     public String approveReservation(Long reservationId) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+        Reservation reservation = getReservationOrElseThrow(
+            reservationId);
 
-        if (reservation.getApprovalType() != ApprovalType.WAITING) {
-            throw new CustomException(ErrorCode.ALREADY_CHECKED_RESERVATION);
-        }
+        isWaitingOrElseThrow(reservation);
 
         reservation.setApprovalType(ApprovalType.APPROVED);
-
         reservationRepository.save(reservation);
 
         return "예약을 승인 처리하였습니다.";
     }
 
     public String refuseReservation(Long reservationId) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+        Reservation reservation = getReservationOrElseThrow(reservationId);
 
-        if (reservation.getApprovalType() != ApprovalType.WAITING) {
-            throw new CustomException(ErrorCode.ALREADY_CHECKED_RESERVATION);
-        }
+        isWaitingOrElseThrow(reservation);
 
         reservation.setApprovalType(ApprovalType.REFUSED);
-
         reservationRepository.save(reservation);
 
         return "예약을 거절 처리하였습니다.";
+    }
+
+    private Reservation getReservationOrElseThrow(Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
+        return reservation;
+    }
+
+    private static void isWaitingOrElseThrow(Reservation reservation) {
+        if (reservation.getApprovalType() != ApprovalType.WAITING) {
+            throw new CustomException(ErrorCode.ALREADY_CHECKED_RESERVATION);
+        }
     }
 
 }
