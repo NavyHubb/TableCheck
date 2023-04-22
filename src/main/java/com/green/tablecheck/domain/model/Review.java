@@ -28,7 +28,7 @@ public class Review extends BaseEntity {
     @OneToOne(mappedBy = "review")
     private Reservation reservation;
 
-    private int star;
-    private String message;
+    private int star;  // 별점
+    private String message;  // 리뷰 메세지
 
 }

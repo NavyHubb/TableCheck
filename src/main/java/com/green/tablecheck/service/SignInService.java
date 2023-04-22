@@ -25,11 +25,12 @@ public class SignInService {
         Manager m = managerRepository.findByEmail(form.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MANAGER));
 
+        // 비밀번호 검증
         if (!PasswordUtil.checkPassword(form.getPassword(), m.getPassword())) {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
 
-        // 2. 토큰 발행 및 반환
+        // 토큰 발행 및 반환
         return provider.createToken(m.getEmail(), m.getId(), UserType.MANAGER);
     }
 
@@ -37,6 +38,7 @@ public class SignInService {
         Customer c = customerRepository.findByEmail(form.getEmail())
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CUSTOMER));
 
+        // 비밀번호 검증
         if (!PasswordUtil.checkPassword(form.getPassword(), c.getPassword())) {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }

@@ -46,22 +46,18 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "review_id")
     private Review review;
 
-    private LocalDateTime deadline;  // TODO : 미래 날짜만 허용하도록 @Future 유효성 검사 등록
-    private int peopleCount;
-    private String code;
+    private LocalDateTime deadline;  // 방문확인 데드라인(예약 시간 10분 전)
+    private int peopleCount;  // 예약 인원 수
+    private String code;  // 방문확인 코드
 
     @Enumerated(EnumType.STRING)
-    private AttendType attendType;
+    private AttendType attendType;  // 고객 방문 여부
 
     @Enumerated(EnumType.STRING)
-    private ApprovalType approvalType;
+    private ApprovalType approvalType;  // 매장 매니저의 승인 여부
 
     public boolean hasReview() {
-        if (this.review == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return this.review != null;
     }
 
 }

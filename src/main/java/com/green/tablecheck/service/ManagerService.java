@@ -27,7 +27,9 @@ public class ManagerService {
     private final ManagerRepository managerRepository;
     private final ReservationRepository reservationRepository;
 
-    // 상점 등록
+    /**
+     * 상점 등록하기
+     */
     public String addShop(Long managerId, AddShopForm form) {
         Manager manager = getManagerOrElseThrow(managerId);
 
@@ -36,6 +38,15 @@ public class ManagerService {
             throw new CustomException(ErrorCode.ALREADY_SHOP_EXIST);
         }
 
+        Shop shop = createAndSetShop(form, manager);
+
+        // Trie에 상점명 등록
+        addAutocompleteKeyword(shop.getName());
+
+        return "매장 등록이 완료되었습니다.";
+    }
+
+    private Shop createAndSetShop(AddShopForm form, Manager manager) {
         // 새로운 shop 생성하여 manager 객체에 등록
         Shop shop = Shop.builder()
             .name(form.getName())
@@ -49,23 +60,21 @@ public class ManagerService {
         // Manager 엔티티가 Shop 엔티티에 영속성 전이 설정이 되어 있기 때문에
         // manager 객체에 shop 객체를 세팅한 뒤 manager를 영속화하면 여기에 연관되어 있는 shop까지 함께 영속화됨
         managerRepository.save(manager);
-
-        addAutocompleteKeyword(shop.getName());
-
-        return "매장 등록이 완료되었습니다.";
+        return shop;
     }
 
     private Manager getManagerOrElseThrow(Long managerId) {
-        Manager manager = managerRepository.findById(managerId)
+        return managerRepository.findById(managerId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MANAGER));
-        return manager;
     }
 
-    // Trie에 상점명 등록
-    public void addAutocompleteKeyword(String keyword) {
+    private void addAutocompleteKeyword(String keyword) {
         this.trie.put(keyword, null);
     }
 
+    /**
+     * 매장 영업상태 변경하기
+     */
     public String changeStatus(Long managerId) {
         Manager manager = getManagerOrElseThrow(managerId);
 
@@ -83,6 +92,9 @@ public class ManagerService {
         }
     }
 
+    /**
+     * 예약 신청 승인하기
+     */
     public String approveReservation(Long reservationId) {
         Reservation reservation = getReservationOrElseThrow(
             reservationId);
@@ -95,6 +107,9 @@ public class ManagerService {
         return "예약을 승인 처리하였습니다.";
     }
 
+    /**
+     * 예약 신청 거절하기
+     */
     public String refuseReservation(Long reservationId) {
         Reservation reservation = getReservationOrElseThrow(reservationId);
 
@@ -107,9 +122,8 @@ public class ManagerService {
     }
 
     private Reservation getReservationOrElseThrow(Long reservationId) {
-        Reservation reservation = reservationRepository.findById(reservationId)
+        return reservationRepository.findById(reservationId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION));
-        return reservation;
     }
 
     private static void isWaitingOrElseThrow(Reservation reservation) {

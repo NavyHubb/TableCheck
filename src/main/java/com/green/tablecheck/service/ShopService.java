@@ -18,17 +18,18 @@ public class ShopService {
 
     private final ShopRepository shopRepository;
 
-    // keyword를 prefix로 갖는 상점명들의 목록을 반환
+    /**
+     * 매장 검색
+     * keyword를 prefix로 갖는 상점명들의 목록을 반환
+     */
     public List<String> searchShop(String keyword) {
         return (List<String>) this.trie.prefixMap(keyword).keySet()
             .stream().collect(Collectors.toList());
     }
 
     public Shop getShop(String shopName) {
-        Shop shop = shopRepository.findByName(shopName)
+        return shopRepository.findByName(shopName)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_SHOP));
-
-        return shop;
     }
 
 
