@@ -23,5 +23,9 @@
 - [x] 방문 확인
 - [x] 방문 코드 인증
 
-# 2. 클래스 다이어그램
+# 2. Diagram
+## 2. 1. Class Diagram
 <img width="853" alt="Screenshot 2023-04-19 at 4 25 58 PM" src="https://user-images.githubusercontent.com/101810007/233000655-7dc661ed-93e1-49e1-a305-f6fc424830aa.png">
+
+## 2. 2. Entity Relationship Diagram
+<img width="1034" alt="Screenshot 2023-04-24 at 6 07 48 PM" src="https://user-images.githubusercontent.com/101810007/233951626-739d507c-2522-44c6-9f54-a39aff279009.png">
