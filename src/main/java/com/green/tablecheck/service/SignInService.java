@@ -21,6 +21,9 @@ public class SignInService {
     private final CustomerRepository customerRepository;
     private final JwtAuthenticationProvider provider;
 
+    /**
+     * 점장 - 로그인
+     */
     public String managerSignIn(SignInForm form) {
         Manager m = managerRepository.findByEmail(form.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MANAGER));
@@ -34,6 +37,9 @@ public class SignInService {
         return provider.createToken(m.getEmail(), m.getId(), UserType.MANAGER);
     }
 
+    /**
+     * 고객 - 로그인
+     */
     public String customerSignIn(SignInForm form) {
         Customer c = customerRepository.findByEmail(form.getEmail())
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CUSTOMER));

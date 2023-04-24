@@ -17,7 +17,9 @@ public class SignUpService {
     private final ManagerRepository managerRepository;
     private final CustomerRepository customerRepository;
 
-    // 회원가입
+    /**
+     * 점장 - 회원가입
+     */
     public String managerSignUp(SignUpForm form) {
         if (isEmailExistManager(form.getEmail())) {
             throw new CustomException(ErrorCode.ALREADY_REGISTERED_USER);
@@ -33,7 +35,9 @@ public class SignUpService {
         return managerRepository.findByEmail(email).isPresent();
     }
 
-    // 회원가입
+    /**
+     * 고객 - 회원가입
+     */
     public String customerSignUp(SignUpForm form) {
         if (isEmailExistCustomer(form.getEmail())) {
             throw new CustomException(ErrorCode.ALREADY_REGISTERED_USER);

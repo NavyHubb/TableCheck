@@ -57,6 +57,7 @@ public class CustomerService {
             throw new CustomException(ErrorCode.ALREADY_RESERVATION_EXIST);
         }
 
+        // 예약 생성 및 연관관계 설정
         createAndSetReservation(form, customer, shop);
 
         return "예약 신청이 완료되었습니다.";
@@ -134,6 +135,7 @@ public class CustomerService {
 
     /**
      * 리뷰 작성하기
+     * 예약에 참석(ATTEND)했고, 아직 리뷰를 작성하지 않은 고객에 대해서만 진행
      */
     public String review(Long reservationId, ReviewForm form) {
         Reservation reservation = getReservationOrElseThrow(reservationId);
@@ -148,6 +150,7 @@ public class CustomerService {
             throw new CustomException(ErrorCode.ALREADY_REVIEW_EXIST);
         }
 
+        // 리뷰 생성 및 연관관계 설정
         createAndSetReview(form, reservation);
 
         return "리뷰가 등록되었습니다.";

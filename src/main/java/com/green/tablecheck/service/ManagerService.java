@@ -74,6 +74,7 @@ public class ManagerService {
 
     /**
      * 매장 영업상태 변경하기
+     * OPEN <-> CLOSED
      */
     public String changeStatus(Long managerId) {
         Manager manager = getManagerOrElseThrow(managerId);
@@ -94,6 +95,7 @@ public class ManagerService {
 
     /**
      * 예약 신청 승인하기
+     * 예약 승인 및 거절 처리를 기다리는(WAITING) 상태에 해당하는 고객에 대해서만 진행
      */
     public String approveReservation(Long reservationId) {
         Reservation reservation = getReservationOrElseThrow(
@@ -109,6 +111,7 @@ public class ManagerService {
 
     /**
      * 예약 신청 거절하기
+     * 예약 승인 및 거절 처리를 기다리는(WAITING) 상태에 해당하는 고객에 대해서만 진행
      */
     public String refuseReservation(Long reservationId) {
         Reservation reservation = getReservationOrElseThrow(reservationId);

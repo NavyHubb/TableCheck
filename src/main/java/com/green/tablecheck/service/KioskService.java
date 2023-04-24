@@ -19,6 +19,10 @@ public class KioskService {
 
     private final ReservationRepository reservationRepository;
 
+    /**
+     * 방문 신청
+     * 고객이 매장의 키오스크를 통해 매장에 방문했음을 알리는 기능
+     */
     public String attend(Long shopId, String phone) {
         // 오늘 날짜에 해당하는 예약 조회
         Reservation reservation = getReservationOrElseThrow(shopId, phone);
@@ -46,6 +50,9 @@ public class KioskService {
         return reservation;
     }
 
+    /**
+     * 고객에게 할당된 예약 확인 코드를 확인함으로써 방문 처리 진행
+     */
     public String checkCode(Long shopId, String phone, String code) {
         Reservation reservation = getReservationOrElseThrow(shopId, phone);
 

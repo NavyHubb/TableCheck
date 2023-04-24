@@ -27,6 +27,9 @@ public class ShopService {
             .stream().collect(Collectors.toList());
     }
 
+    /**
+     * 매장 조회
+     */
     public Shop getShop(String shopName) {
         return shopRepository.findByName(shopName)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_SHOP));
