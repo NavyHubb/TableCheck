@@ -25,7 +25,7 @@
 
 # 2. Diagram
 ## 2. 1. Class Diagram
-<img width="853" alt="Screenshot 2023-04-19 at 4 25 58 PM" src="https://user-images.githubusercontent.com/101810007/233000655-7dc661ed-93e1-49e1-a305-f6fc424830aa.png">
+<img width="872" alt="Screenshot 2023-05-07 at 3 23 28 PM" src="https://user-images.githubusercontent.com/101810007/236661394-125e6798-c1d2-43d9-bb34-90b5fd3a6bd0.png">
 
 ## 2. 2. Entity Relationship Diagram
-<img width="1034" alt="Screenshot 2023-04-24 at 6 07 48 PM" src="https://user-images.githubusercontent.com/101810007/233951626-739d507c-2522-44c6-9f54-a39aff279009.png">
+<img width="767" alt="Screenshot 2023-05-05 at 4 33 34 PM" src="https://user-images.githubusercontent.com/101810007/236661373-de54e80f-9fc8-4fbd-8524-67a29322e187.png">

@@ -109,7 +109,6 @@ public class CustomerService {
 
     public String getCode(Long reservationId, Long customerId) {
         Reservation reservation = getReservationOrElseThrow(reservationId);
-        Customer customer = getCustomerOrElseThrow(customerId);
 
         // 해당 예약 건을 예약한 당사자 고객이 맞는지 확인
         if (isRightCustomer(customerId, reservation)) {
